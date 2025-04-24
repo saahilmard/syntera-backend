@@ -6,6 +6,9 @@ class TranscriptionResponse(BaseModel):
     duration: float
     
 class SOAPResponse(BaseModel):
+    """
+    Pydantic model for SOAP note response
+    """
     subjective: str
     objective: str
     assessment: str

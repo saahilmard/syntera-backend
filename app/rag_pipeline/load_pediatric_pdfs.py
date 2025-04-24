@@ -1,8 +1,12 @@
 import os
 import fitz  # PyMuPDF
+from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
+
+# Load environment variables from .env file
+load_dotenv()
 
 def load_pdf_text_chunks(pdf_folder: str):
     chunks = []
@@ -20,12 +24,20 @@ def load_pdf_text_chunks(pdf_folder: str):
     return chunks
 
 def create_vector_store(chunks):
-    embeddings = OpenAIEmbeddings()
+    # Configure embeddings
+    embeddings = OpenAIEmbeddings(
+        openai_api_key=os.getenv("OPENAI_API_KEY")
+    )
     vectordb = FAISS.from_documents(chunks, embeddings)
-    vectordb.save_local("rag_pipeline/medical_faiss_index")
+    # Use absolute path for vector store
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    index_path = os.path.join(current_dir, "medical_faiss_index")
+    vectordb.save_local(index_path)
 
 if __name__ == "__main__":
-    pdf_folder = "rag_pipeline/rag_docs"
+    # Use absolute path for PDF folder
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    pdf_folder = os.path.join(current_dir, "rag_docs")
     chunks = load_pdf_text_chunks(pdf_folder)
     create_vector_store(chunks)
     print(f"Successfully processed PDFs and created vector store with {len(chunks)} chunks") 

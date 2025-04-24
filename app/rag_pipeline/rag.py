@@ -1,6 +1,6 @@
 from langchain.prompts import ChatPromptTemplate
 from langchain.chat_models import ChatOpenAI
-from rag_pipeline.query_rag_context import get_relevant_context
+from app.rag_pipeline.query_rag_context import get_relevant_context
 import os
 
 model = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), temperature=0.3, model="gpt-4")

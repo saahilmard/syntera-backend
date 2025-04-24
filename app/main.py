@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import transcribe, soap
+from app.routers import transcribe, soap
 
 app = FastAPI(title="Syntera API", description="Backend API for Syntera - AI Medical Scribe")
 

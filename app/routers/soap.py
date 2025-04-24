@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from models import SOAPResponse
-from rag_pipeline.rag import generate_soap_notes
+from app.models import SOAPResponse
+from app.rag_pipeline.rag import generate_soap_notes
 
 router = APIRouter()
 
