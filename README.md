@@ -1,60 +1,96 @@
-# Syntera Backend
+# Syntera API - AI Medical Scribe Backend
 
-AI medical scribe backend service for pediatricians, featuring automatic transcription and SOAP note generation.
+This is the backend API for Syntera, an AI-powered medical scribe system that generates SOAP notes using RAG (Retrieval-Augmented Generation) with pediatric medical knowledge.
 
 ## Features
 
-- Audio transcription using OpenAI's Whisper
-- SOAP note generation (coming soon with GPT-4 + RAG)
 - FastAPI-based REST API
-- CORS-enabled for frontend integration
+- RAG pipeline for context-aware medical note generation
+- PDF document processing and vectorization
+- GPT-4 powered SOAP note generation
+- CORS support for frontend integration
 
 ## Setup
 
-1. Create a virtual environment:
+1. Clone the repository:
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+git clone <your-repo-url>
+cd backend
 ```
 
-2. Install dependencies:
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Run the server:
-```bash
-# Make sure you're in the backend directory
-PYTHONPATH=$PYTHONPATH:./app uvicorn app.main:app --reload
+4. Set up environment variables:
+Create a `.env` file in the root directory with:
+```
+OPENAI_API_KEY=your_openai_api_key_here
 ```
 
-The API will be available at `http://localhost:8000`.
+5. Add pediatric medical PDFs:
+- Place your pediatric medical PDFs in `rag_pipeline/rag_docs/`
+- Initialize the vector store:
+```bash
+python -m app.rag_pipeline.load_pediatric_pdfs
+```
+
+## Running the API
+
+Start the FastAPI server:
+```bash
+uvicorn app.main:app --reload
+```
+
+The API will be available at `http://localhost:8000`
 
 ## API Endpoints
 
-### POST /transcribe
-Upload an audio file for transcription using Whisper.
+### Generate SOAP Notes
+- **POST** `/generate_soap`
+- Request body:
+```json
+{
+    "transcript": "patient conversation transcript",
+    "patient_age": 5,
+    "visit_type": "well-child"
+}
+```
 
-### POST /generate_soap
-Generate a SOAP note from a transcript (placeholder endpoint).
+## Project Structure
 
-## API Documentation
-
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
-
-## Development
-
-The project structure is organized as follows:
 ```
 backend/
 ├── app/
-│   ├── routers/
-│   │   ├── transcribe.py
-│   │   └── soap.py
-│   ├── services/
-│   │   └── transcription_service.py
+│   ├── main.py
 │   ├── models.py
-│   └── main.py
-└── requirements.txt
-``` 
+│   ├── rag_pipeline/
+│   │   ├── load_pediatric_pdfs.py
+│   │   ├── query_rag_context.py
+│   │   ├── rag.py
+│   │   └── rag_docs/
+│   └── routers/
+│       ├── soap.py
+│       └── transcribe.py
+├── requirements.txt
+└── README.md
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 
