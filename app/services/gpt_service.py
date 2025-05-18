@@ -5,6 +5,7 @@ from app.utils.logger import logger
 from config import settings
 
 
+# Initialize client with organization-level authentication
 client = AsyncOpenAI(
     api_key=settings.OPENAI_API_KEY,
     organization=settings.OPENAI_ORG_ID if hasattr(settings, 'OPENAI_ORG_ID') else None
