@@ -3,24 +3,24 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes import generate, regenerate
 from app.utils.logger import logger
 
-app = FastAPI(
-    title="Syntera API",
-    description="Backend API for Syntera - AI Medical Scribe",
-    version="1.0.0"
-)
+app = FastAPI(title="Syntera AI Scribe API")
 
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React default port
+    allow_origins=["*"],  # In production, replace with your frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Include routers
-app.include_router(generate.router, prefix="/api", tags=["notes"])
-app.include_router(regenerate.router, prefix="/api", tags=["notes"])
+app.include_router(generate.router, prefix="/api/v1", tags=["SOAP Note Generation"])
+app.include_router(regenerate.router, prefix="/api/v1", tags=["SOAP Note Regeneration"])
+
+@app.get("/")
+async def root():
+    return {"message": "Welcome to Syntera AI Scribe API"}
 
 @app.get("/ping")
 async def ping():
