@@ -1,5 +1,5 @@
 from langchain.prompts import ChatPromptTemplate
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from app.rag_pipeline.query_rag_context import get_relevant_context
 import os
 

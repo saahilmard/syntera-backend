@@ -69,4 +69,17 @@ env/
 *.swo
 
 # OS
-.DS_Store 
+.DS_Store
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Project specific
+config.py
+*.log 
